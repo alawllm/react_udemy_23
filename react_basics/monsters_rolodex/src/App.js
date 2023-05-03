@@ -10,31 +10,33 @@ class App extends Component {
     //initializing state 
     //state - always json object
     this.state = {
-      name: { firstName: 'Ala', lastName: 'Bebok' },
-      company: 'ZTM'
+      monsters: [
+
+      ]
     }
+  }
+
+  //will run the first time the component will be rendered
+  componentDidMount() {
+    fetch('https://jsonplaceholder.typicode.com/users')
+      //every .then that returns a value returns another promise
+      //response is being returned from .then
+      .then((response) => response.json())
+      //what has been returned is being passed to users
+      //setting state
+      .then((users) => this.setState(() => { return { monsters: users } },
+        () => {
+          console.log(this.state)
+        }
+      ))
   }
 
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Hello I am {this.state.name.firstName} {this.state.name.lastName}, I work at {this.state.company}
-          </p>
-          <button onClick={() => {
-            this.setState(() => {
-              return {
-                name: { firstName: 'Andrei', lastName: 'Nagoie' }
-              }
-            },
-              // optional callback function
-              () => {
-                console.log(this.state)
-              })
-          }}>Change name</button>
-        </header>
+        {
+          this.state.monsters.map((monster) => { return <div key={monster.id}><h1>{monster.name}</h1></div> })
+        }
       </div >
     )
   }
