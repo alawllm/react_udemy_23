@@ -6,18 +6,18 @@ import './App.css';
 class App extends Component {
   //constructor method will run before anything else
   constructor() {
+    console.log('constructor')
     super();
     //initializing state 
     //state - always json object
     this.state = {
-      monsters: [
-
-      ]
+      monsters: []
     }
   }
 
   //will run the first time the component will be rendered
   componentDidMount() {
+    console.log('componentDidMount')
     fetch('https://jsonplaceholder.typicode.com/users')
       //every .then that returns a value returns another promise
       //response is being returned from .then
@@ -32,11 +32,25 @@ class App extends Component {
   }
 
   render() {
+    console.log('render')
     return (
       <div className="App">
+        { /* //input field with onChange event handler */}
+        <input className="search-box" type="search" placeholder="search monsters" onChange={(event) => {
+          console.log(event.target.value)
+          const searchString = event.target.value.toLocaleLowerCase()
+          const filteredMonsters = this.state.monsters.filter((monster) => { return monster.name.toLocaleLowerCase().includes(searchString) })
+
+          this.setState(() => {
+            return { monsters: filteredMonsters }
+          })
+
+        }} />
         {
           this.state.monsters.map((monster) => { return <div key={monster.id}><h1>{monster.name}</h1></div> })
+
         }
+
       </div >
     )
   }
