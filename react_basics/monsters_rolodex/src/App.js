@@ -46,7 +46,7 @@ class App extends Component {
 
     return (
       < div className="App" >
-        { /* //input field with onChange event handler */}
+
         < input className="search-box" type="search" placeholder="search monsters" onChange={onSearchChange} />
 
         <CardList monsters={filteredMonsters} />
