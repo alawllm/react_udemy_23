@@ -11,7 +11,8 @@ class App extends Component {
     //initializing state 
     //state - always json object
     this.state = {
-      monsters: []
+      monsters: [],
+      searchField: ''
     }
   }
 
@@ -31,23 +32,29 @@ class App extends Component {
       ))
   }
 
+  //function not inside of the state - not re-initialized every time, 
+  //makes the function more efficient
+  onSearchChange = (event) => {
+    const searchField = event.target.value.toLocaleLowerCase()
+    this.setState(() => {
+      return { searchField }
+    })
+  }
+
   render() {
     console.log('render')
+
+    const { monsters, searchField } = this.state;
+    const { onSearchChange } = this;
+
+    const filteredMonsters = monsters.filter((monster) => { return monster.name.toLocaleLowerCase().includes(searchField) })
+
     return (
       <div className="App">
         { /* //input field with onChange event handler */}
-        <input className="search-box" type="search" placeholder="search monsters" onChange={(event) => {
-          console.log(event.target.value)
-          const searchString = event.target.value.toLocaleLowerCase()
-          const filteredMonsters = this.state.monsters.filter((monster) => { return monster.name.toLocaleLowerCase().includes(searchString) })
-
-          this.setState(() => {
-            return { monsters: filteredMonsters }
-          })
-
-        }} />
+        <input className="search-box" type="search" placeholder="search monsters" onChange={onSearchChange} />
         {
-          this.state.monsters.map((monster) => { return <div key={monster.id}><h1>{monster.name}</h1></div> })
+          filteredMonsters.map((monster) => { return <div key={monster.id}><h1>{monster.name}</h1></div> })
 
         }
 
