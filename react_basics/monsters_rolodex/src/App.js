@@ -1,10 +1,31 @@
-import { Component } from 'react';
+import { useState } from 'react';
 
 import CardList from './components/card-list/card-list.component'
 import SearchBox from './components/search-box/search-box.component'
 import './App.css';
 
-class App extends Component {
+const App = () => {
+  console.log('render')
+  //gives back array with: value, setValue
+  //each hook only hooks into one value
+  const [searchField, setSearchField] = useState('');//[value, setValue]
+  console.log({ searchField })
+
+  const onSearchChange = (event) => {
+    const searchFieldString = event.target.value.toLocaleLowerCase()
+    setSearchField(searchFieldString)
+  }
+
+
+
+  return (< div className="App" >
+    <h1 className="app-title">Kitties Rolodex</h1>
+    <SearchBox onChangeHandler={onSearchChange} className='monsters-search-box' placeholder='search monsters' />
+    <CardList monsters={filteredMonsters} />
+  </div >)
+}
+
+/*class App extends Component {
   //constructor method will run before anything else
   constructor() {
     super();
@@ -54,6 +75,6 @@ class App extends Component {
     )
   }
 }
-
+*/
 
 export default App;
