@@ -1,22 +1,31 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import CardList from './components/card-list/card-list.component'
 import SearchBox from './components/search-box/search-box.component'
 import './App.css';
 
 const App = () => {
-  console.log('render')
-  //gives back array with: value, setValue
-  //each hook only hooks into one value
   const [searchField, setSearchField] = useState('');//[value, setValue]
-  console.log({ searchField })
+  const [monsters, setMonsters] = useState([]);
+  const [filteredMonsters, setFilterMonsters] = useState(monsters);
+  //fetch inside of useEffect - will run only when the values inside of the array change
+  //if we dont want to trigger this callback ever again, the array should remain empty
+  useEffect(() => {
+    fetch('https://jsonplaceholder.typicode.com/users')
+      .then((response) => response.json())
+      .then((users) => setMonsters(users))
+  }, [])
+
+  //monsters should be filtered only when searchField or monsters change
+  useEffect(() => {
+    const newFilteredMonsters = monsters.filter((monster) => { return monster.name.toLocaleLowerCase().includes(searchField) })
+    setFilterMonsters(newFilteredMonsters)
+  }, [searchField, monsters])
 
   const onSearchChange = (event) => {
     const searchFieldString = event.target.value.toLocaleLowerCase()
     setSearchField(searchFieldString)
   }
-
-
 
   return (< div className="App" >
     <h1 className="app-title">Kitties Rolodex</h1>
@@ -25,56 +34,5 @@ const App = () => {
   </div >)
 }
 
-/*class App extends Component {
-  //constructor method will run before anything else
-  constructor() {
-    super();
-    //initializing state 
-    //state - always json object
-    this.state = {
-      monsters: [],
-      searchField: ''
-    }
-  }
-
-  //will run the first time the component will be rendered
-  componentDidMount() {
-    fetch('https://jsonplaceholder.typicode.com/users')
-      //every .then that returns a value returns another promise
-      //response is being returned from .then
-      .then((response) => response.json())
-      //what has been returned is being passed to users
-      //setting state
-      .then((users) => this.setState(() => { return { monsters: users } },
-        () => {
-          console.log(this.state)
-        }
-      ))
-  }
-
-  //function not inside of the state - not re-initialized every time, 
-  //makes the function more efficient
-  onSearchChange = (event) => {
-    const searchField = event.target.value.toLocaleLowerCase()
-    this.setState(() => {
-      return { searchField }
-    })
-  }
-
-  render() {
-    const { monsters, searchField } = this.state;
-    const { onSearchChange } = this;
-    const filteredMonsters = monsters.filter((monster) => { return monster.name.toLocaleLowerCase().includes(searchField) })
-
-    return (
-      < div className="App" >
-        <h1 className="app-title">Kitties Rolodex</h1>
-        <SearchBox onChangeHandler={onSearchChange} className='monsters-search-box' placeholder='search monsters' />
-        <CardList monsters={filteredMonsters} />
-      </div >
-    )
-  }
-}
-*/
 
 export default App;
