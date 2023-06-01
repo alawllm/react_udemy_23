@@ -1,5 +1,4 @@
 import './checkout.styles.scss'
-import ProductCard from '../../components/product-card/product-card.component';
 import { useContext } from 'react';
 
 import { CartContext } from '../../contexts/cart.context';
@@ -32,7 +31,6 @@ const Checkout = () => {
                 </div>
             </div>
             {cartItems.map((cartItem) => {
-                const { id, name, quantity } = cartItem;
                 return (
                     <CheckoutItem key={cartItem.id} cartItem={cartItem} />
                 )
