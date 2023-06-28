@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import FormInput from '../form-input/form-input.component';
-import { signInWithGooglePopup, createUserDocumentFromAuth, signInAuthUserWithEmailAndPassword } from '../../utils/firebase/firebase.utils';
-import Button from '../button/button.component';
-import './sign-in-form.styles.scss'
+import { signInWithGooglePopup, signInAuthUserWithEmailAndPassword } from '../../utils/firebase/firebase.utils';
+import Button, { BUTTON_TYPE_CLASSES } from '../button/button.component';
 
+import { SignUpContainer, ButtonsContainer } from './sign-in-form.styles'
 
 const defaultFormFields = {
     email: '',
@@ -27,7 +27,7 @@ const SignInForm = () => {
         event.preventDefault();
 
         try {
-            const { user } = await signInAuthUserWithEmailAndPassword(email, password);
+            await signInAuthUserWithEmailAndPassword(email, password)
             resetFormFields();
         } catch (error) {
             switch (error.code) {
@@ -52,18 +52,21 @@ const SignInForm = () => {
     }
 
     return (
-        <div className="sign-up-container">
+        <SignUpContainer>
             <h2>Already have an account?</h2>
             <span>Sign in with your email and password!</span>
             <form onSubmit={handleSubmit} action="">
                 <FormInput label="Email" type="email" required onChange={handleChange} name="email" value={email} />
                 <FormInput label="Password" type="password" required onChange={handleChange} name="password" value={password} />
-                <div className="buttons-container">
+                <ButtonsContainer>
                     <Button buttonType='submit'>Sign In</Button>
-                    <Button type='button' buttonType="google" onClick={signInWithGoogle}>Google Sign In</Button>
-                </div>
+                    <Button
+                        type='button'
+                        buttonType={BUTTON_TYPE_CLASSES.google}
+                        onClick={signInWithGoogle}>Google Sign In</Button>
+                </ButtonsContainer>
             </form>
-        </div>
+        </SignUpContainer>
     )
 };
 

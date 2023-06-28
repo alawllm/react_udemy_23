@@ -1,14 +1,15 @@
-import './category-preview.styles.scss'
 import ProductCard from '../product-card/product-card.component';
 import { Link } from 'react-router-dom';
 
+import { CategoryPreviewContainer, Title, Preview } from './category-preview.styles';
+
 const CategoryPreview = ({ title, products }) => {
     return (
-        <div className='category-preview-container'>
-            <h2>
+        <CategoryPreviewContainer>
+            <Title>
                 <Link className='title' to={title}>{title.toUpperCase()}</Link>
-            </h2>
-            <div className='preview'>
+            </Title>
+            <Preview>
                 {
                     //idx - index number inside of the array
                     products
@@ -17,8 +18,8 @@ const CategoryPreview = ({ title, products }) => {
                             <ProductCard key={product.id} product={product} />
                         )
                 }
-            </div>
-        </div>
+            </Preview>
+        </CategoryPreviewContainer>
     )
 }
 
