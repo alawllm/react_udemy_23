@@ -20,7 +20,7 @@ export const Body = styled.div`
   opacity: 0.7;
   position: absolute;
 
-  h2 {
+  h2{
     font-weight: bold;
     margin: 0 6px 0;
     font-size: 22px;
